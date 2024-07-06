@@ -2,7 +2,7 @@
 Multi-probe consistent hashing, using php
 
 The idea behind this package is that you can distribute keys to nodes in a consistent/sticky way, while also allowing for custom weights for each node.
-This allows you to route 'traffic' to nodes depending on an equal or unequal distribution.
+This allows you to route 'traffic' to nodes using equal or unequal distributions.
 
 The algorithm should distribute more evenly than for example libketama, which can have a deviation between distributions of equal weight as big as about 10%.
 For more information on this algorithm and consistent hashing in general, see:
