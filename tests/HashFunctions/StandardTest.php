@@ -22,11 +22,11 @@ class StandardTest extends TestCase {
             $callbacks[0]('test'),
         );
         $this->assertSame(
-            hexdec(substr(hash('md5', 'test'), 0, 8)),
+            hexdec(substr(hash('sha1', 'test'), 0, 8)),
             $callbacks[1]('test'),
         );
         $this->assertSame(
-            hexdec(substr(hash('sha256', 'test'), 0, 8)),
+            hexdec(substr(hash('md4', 'test'), 0, 8)),
             $callbacks[2]('test'),
         );
     }
