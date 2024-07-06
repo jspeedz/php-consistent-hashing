@@ -1,0 +1,58 @@
+name: PHP Multi-probe Consistent Hashing build
+on:
+    push:
+        branches: [ "main" ]
+    pull_request:
+        branches: [ "main" ]
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        strategy:
+            matrix:
+                php:
+                    - "8.2"
+                    - "8.3"
+                dependencies:
+                    - "lowest"
+                    - "highest"
+                include:
+                    -   php-version: "8.3"
+                        composer-options: "--ignore-platform-reqs"
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Install PHP
+              uses: "shivammathur/setup-php@v2"
+              with:
+                  php-version: "${{ matrix.php }}"
+            - name: Composer install
+              uses: "ramsey/composer-install@v3"
+              with:
+                  dependency-versions: "${{ matrix.dependencies }}"
+                  composer-options: "${{ matrix.composer-options }}"
+
+            - name: Run tests
+              run: composer test
+
+            - name: PHPStan static analysis
+              run: composer phpstan
+
+            - name: Code Coverage Report
+              uses: irongut/CodeCoverageSummary@v1.3.0
+              with:
+                  filename: cobertura.xml
+                  badge: true
+                  fail_below_min: true
+                  format: markdown
+                  hide_branch_rate: false
+                  hide_complexity: true
+                  indicators: true
+                  output: both
+                  thresholds: '60 80'
+
+            - name: Add Coverage PR Comment
+              uses: marocchino/sticky-pull-request-comment@v2
+              if: github.event_name == 'pull_request'
+              with:
+                 recreate: true
+                 path: code-coverage-results.md

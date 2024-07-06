@@ -1,0 +1,38 @@
+{
+    "name": "jspeedz/php-consistent-hashing",
+    "description": "Multi-probe consistent hashing implementation for PHP",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^11.2",
+        "phpstan/phpstan": "^1.11"
+    },
+    "license": "GPL-3.0-only",
+    "authors": [
+        {
+            "name": "jspeedz"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jspeedz\\PhpConsistentHashing\\": "src/"
+        }
+    },
+    "scripts": {
+        "generate-test-data": "@php tests/data/generatedata.php",
+        "test": "@php vendor/bin/phpunit",
+        "phpstan": "@php vendor/bin/phpstan analyse",
+        "phpstanpro": "@php vendor/bin/phpstan --pro"
+    },
+    "scripts-descriptions": {
+        "generate-test-data": "Re-generate test data for tests",
+        "test": "Run all tests",
+        "phpstan": "Runs PHPStan",
+        "phpstanpro": "Runs PHPStan in PRO mode!"
+    },
+    "require": {
+        "php": ">=8.2"
+    },
+    "config": {
+        "process-timeout": 0
+    }
+}
