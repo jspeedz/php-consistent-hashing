@@ -6,7 +6,7 @@ This allows you to route 'traffic' to nodes depending on an equal or custom dist
 
 The algorithm should distribute more evenly than for example libketama, which can have a deviation between distributions of equal weight as big as about 10%.
 For more information on this algorithm and consistent hashing in general, see:
-- 
+- https://arxiv.org/abs/1505.00062
 - https://en.wikipedia.org/wiki/Consistent_hashing
 
 Use cases:
