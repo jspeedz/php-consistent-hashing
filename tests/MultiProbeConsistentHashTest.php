@@ -275,7 +275,7 @@ class MultiProbeConsistentHashTest extends TestCase {
         );
 
         yield 'Random string keys - Equal distribution - 2 nodes' => [
-            'maximumAllowedDeviationPercentage' => 0.3,
+            'maximumAllowedDeviationPercentage' => 0.2,
             'nodes' => [
                 'node1' => 1,
                 'node2' => 1,
@@ -284,7 +284,7 @@ class MultiProbeConsistentHashTest extends TestCase {
         ];
 
         yield 'Random string keys - Equal distribution - 3 nodes' => [
-            'maximumAllowedDeviationPercentage' => 1.4,
+            'maximumAllowedDeviationPercentage' => 1.3,
             'nodes' => [
                 'node1' => 1,
                 'node2' => 1,
@@ -305,7 +305,7 @@ class MultiProbeConsistentHashTest extends TestCase {
         ];
 
         yield 'Random string keys - Unequal distribution - 2 nodes' => [
-            'maximumAllowedDeviationPercentage' => 1.6,
+            'maximumAllowedDeviationPercentage' => 1.5,
             'nodes' => [
                 'node1' => 25,
                 'node2' => 75,
