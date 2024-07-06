@@ -139,6 +139,7 @@ class MultiProbeConsistentHashTest extends TestCase {
 
             foreach($keys as $key) {
                 $pickedNode = $hash->getNode($key);
+                $distribution[$pickedNode][$key] ??= 0;
                 $distribution[$pickedNode][$key] += 1;
 
                 foreach($nodes as $node => $weight) {
