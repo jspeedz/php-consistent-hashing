@@ -1,6 +1,8 @@
 composer.lock
 /vendor/
 /build/
+/tmp/
 .idea
 .phpunit.cache
 clover.xml
+cobertura.xml

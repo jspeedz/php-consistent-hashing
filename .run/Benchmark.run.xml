@@ -1,0 +1,6 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Benchmark" type="PhpLocalRunConfigurationType" factoryName="PHP Console" path="$PROJECT_DIR$/benchmarking/benchmark.php">
+    <CommandLine workingDirectory="$PROJECT_DIR$/benchmarking" />
+    <method v="2" />
+  </configuration>
+</component>

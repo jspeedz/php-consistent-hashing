@@ -8,7 +8,6 @@ class MultiProbeConsistentHash {
      */
     private array $nodes = [];
     private float $totalWeight = 0;
-    private int $probeCount;
     /**
      * @var callable[] $hashFunctions
      */
@@ -18,7 +17,6 @@ class MultiProbeConsistentHash {
      * @param callable[] $hashFunctions
      */
     public function setHashFunctions(array $hashFunctions): void {
-        $this->probeCount = count($hashFunctions);
         $this->hashFunctions = array_values($hashFunctions);
     }
 
@@ -43,8 +41,8 @@ class MultiProbeConsistentHash {
         $targetNode = null;
 
         foreach($this->nodes as $node => $weight) {
-            for($i = 0; $i < $this->probeCount; $i++) {
-                $hash = $this->hashFunctions[$i]($key . $node);
+            foreach($this->hashFunctions as $hashFunction) {
+                $hash = $hashFunction($key . $node);
                 // Adjust hash by weight
                 $weightedHash = $hash / $weight;
                 if($weightedHash < $minHash) {
