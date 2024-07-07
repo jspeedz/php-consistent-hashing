@@ -2,6 +2,11 @@
 
 namespace Jspeedz\PhpConsistentHashing\HashFunctions;
 
+/**
+ * 3 probes.
+ *
+ * This one has a good balance between performance and accuracy.
+ */
 class Standard {
     /**
      * @return callable[]
