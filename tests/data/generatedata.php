@@ -1,6 +1,16 @@
 <?php declare(strict_types=1);
 
 $amount = 50000;
+$targetDir = __DIR__ . '/';
+
+foreach($argv as $item) {
+    if(preg_match('/--amount=(?<amount>[0-9]+)/', $item, $matches)) {
+        $amount = (int) $matches['amount'];
+    }
+    if(preg_match('/--target-dir=(?<targetDir>[a-zA-Z0-9\/.\-]+)/', $item, $matches)) {
+        $targetDir = $matches['targetDir'];
+    }
+}
 
 $generatorCallbacks = [
     'random_ip_addresses.json' => function(): false|string {
@@ -57,5 +67,5 @@ foreach($generatorCallbacks as $fileName => $callback) {
         $tries++;
     } while(!$valid);
 
-    file_put_contents(__DIR__ . '/' . $fileName, json_encode($keys));
+    file_put_contents($targetDir . $fileName, json_encode($keys));
 }
