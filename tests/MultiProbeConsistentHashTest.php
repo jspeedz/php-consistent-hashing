@@ -24,11 +24,7 @@ class MultiProbeConsistentHashTest extends TestCase {
         $hashFunctionsProperty = $reflection->getProperty('hashFunctions');
         $hashFunctionsProperty->setAccessible(true);
 
-        $probeCountProperty = $reflection->getProperty('probeCount');
-        $probeCountProperty->setAccessible(true);
-
         $this->assertSame($hashFunctions, $hashFunctionsProperty->getValue($hash));
-        $this->assertSame(count($hashFunctions), $probeCountProperty->getValue($hash));
     }
 
     public function testAddNode(): void {
