@@ -1,6 +1,15 @@
 <?php declare(strict_types=1);
 
-$amount = 100000;
+$amount = 50000;
+
+$generatorCallbacks = [
+    'random_ip_addresses.json' => function(): false|string {
+        return long2ip(rand(0, PHP_INT_MAX));
+    },
+    'random_strings.json' => function(): string {
+        return bin2hex(random_bytes(10));
+    },
+];
 
 # -------------------
 # -------------------
@@ -26,20 +35,27 @@ function generateItems(int $count, callable $callback): array {
     return $keys;
 }
 
-$keys = generateItems($amount, function(): false|string {
-    return long2ip(rand(0, PHP_INT_MAX));
-});
-if(count($keys) !== count(array_unique($keys))) {
-    throw new Exception('Duplicate IP addresses found, please try again');
-}
-file_put_contents(__DIR__ . '/random_ip_addresses.json', json_encode($keys));
+foreach($generatorCallbacks as $fileName => $callback) {
+    $tries = 1;
+    do {
+        $valid = true;
 
-unset($ipAddresses);
+        $keys = null;
+        try {
+            $keys = generateItems($amount, $callback);
+        }
+        catch(Exception) {
+            $valid = false;
+        }
 
-$keys = generateItems($amount, function(): string {
-    return bin2hex(random_bytes(10));
-});
-if(count($keys) !== count(array_unique($keys))) {
-    throw new Exception('Duplicate random strings found, please try again');
+        if($keys === null || count($keys) !== count(array_unique($keys))) {
+            $valid = false;
+            if($tries > 10) {
+                throw new Exception('Duplicate items found, please try again');
+            }
+        }
+        $tries++;
+    } while(!$valid);
+
+    file_put_contents(__DIR__ . '/' . $fileName, json_encode($keys));
 }
-file_put_contents(__DIR__ . '/random_strings.json', json_encode($keys));
