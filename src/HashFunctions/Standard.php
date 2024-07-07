@@ -11,10 +11,10 @@ class Standard {
             function(string $key): int {
                 return crc32($key);
             },
-            function(string $key): int {
+            function(string $key): int|float {
                 return hexdec(substr(hash('sha1', $key), 0, 8));
             },
-            function(string $key): int {
+            function(string $key): int|float {
                 return hexdec(substr(hash('md4', $key), 0, 8));
             },
         ];
