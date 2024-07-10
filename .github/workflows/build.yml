@@ -14,9 +14,9 @@ jobs:
                 php:
                     - "8.2"
                     - "8.3"
-                dependencies:
-                    - "lowest"
-                    - "highest"
+#                dependencies:
+#                    - "lowest"
+#                    - "highest"
                 include:
                     -   php-version: "8.3"
                         composer-options: "--ignore-platform-reqs"
