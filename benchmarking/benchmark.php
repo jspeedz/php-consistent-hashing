@@ -343,7 +343,7 @@ $benchmark->sortByTwoColumns(
     SORT_ASC,
 );
 
-$benchmark->printResults($results);
+echo $benchmark->printResults($results);
 
 if($fp !== false) {
     fclose($fp);
