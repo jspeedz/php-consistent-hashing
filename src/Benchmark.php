@@ -4,7 +4,6 @@ namespace Jspeedz\PhpConsistentHashing;
 
 use DateTimeImmutable;
 use Exception;
-use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
 
 class Benchmark {
     /**
@@ -29,11 +28,10 @@ class Benchmark {
     }
 
     /**
-     *
+     * @codeCoverageIgnore
      * @return string[]
      * @throws Exception
      */
-    #[CodeCoverageIgnore]
     public function fetchKeys(): array {
         $keysContent = file_get_contents(__DIR__ . '/../tests/data/random_strings.json');
         if(!$keysContent) {
@@ -129,7 +127,9 @@ class Benchmark {
         array_multisort($primaryValues, $primaryDirection, $secondaryValues, $secondaryDirection, $array);
     }
 
-    #[CodeCoverageIgnore]
+    /**
+     * @codeCoverageIgnore
+     */
     public function printProgress(int $iterationCount, int $totalIterations, DateTimeImmutable $startTime): void {
         if($iterationCount % 5 !== 0) {
             return;
@@ -142,7 +142,9 @@ class Benchmark {
                 ->format('%H:%I:%S') . PHP_EOL;
     }
 
-    #[CodeCoverageIgnore]
+    /**
+     * @codeCoverageIgnore
+     */
     public function generateData(int $dataCount): void {
         $targetDir = __DIR__ . '/../tmp/benchmark/';
 

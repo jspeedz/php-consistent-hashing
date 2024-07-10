@@ -132,7 +132,7 @@ class BenchmarkTest extends TestCase {
         $this->assertEquals($expected, $array);
     }
 
-    public function testFormatNumber() {
+    public function testFormatNumber(): void {
         $class = new ReflectionClass(Benchmark::class);
         $method = $class->getMethod('formatNumber');
         $method->setAccessible(true);
@@ -230,7 +230,7 @@ class BenchmarkTest extends TestCase {
         );
     }
 
-    public function testPrintResults() {
+    public function testPrintResults(): void {
         $mock = $this->getMockBuilder(Benchmark::class)
             ->onlyMethods(['formatNumber'])
             ->getMock();
