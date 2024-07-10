@@ -5,10 +5,6 @@ namespace Jspeedz\PhpConsistentHashing;
 use DateTimeImmutable;
 use Exception;
 
-/**
- * @codeCoverageIgnore
- * @todo Write tests..
- */
 class Benchmark {
     /**
      * @param string[] $algorithms
@@ -32,6 +28,7 @@ class Benchmark {
     }
 
     /**
+     * @codeCoverageIgnore
      * @return string[]
      * @throws Exception
      */
@@ -130,6 +127,9 @@ class Benchmark {
         array_multisort($primaryValues, $primaryDirection, $secondaryValues, $secondaryDirection, $array);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function printProgress(int $iterationCount, int $totalIterations, DateTimeImmutable $startTime): void {
         if($iterationCount % 5 !== 0) {
             return;
@@ -142,6 +142,9 @@ class Benchmark {
                 ->format('%H:%I:%S') . PHP_EOL;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function generateData(int $dataCount): void {
         $targetDir = __DIR__ . '/../tmp/benchmark/';
 
@@ -171,8 +174,9 @@ class Benchmark {
     /**
      * @param array<int, array<string, string|float>> $results
      */
-    public function printResults(array $results): void {
-        echo 'Results:' . PHP_EOL;
+    public function printResults(array $results): string {
+        $string = 'Results:' . PHP_EOL;
+
         foreach($results as $result) {
             $result['name'] = str_pad((string) $result['name'], 5, ' ', STR_PAD_RIGHT);
             $result['distribution'] = str_pad((string) $result['distribution'], 5, ' ', STR_PAD_RIGHT);
@@ -182,15 +186,17 @@ class Benchmark {
 
             foreach($result as $title => $value) {
                 if(in_array($title, ['name', 'distribution'], true)) {
-                    echo '[' . $value . ']';
+                    $string .= '[' . $value . ']';
                     if($title === 'name') {
-                        echo ' -- ';
+                        $string .= ' -- ';
                     }
                     continue;
                 }
-                echo $title . ': ' . $value . ' -- ';
+                $string .= $title . ': ' . $value . ' -- ';
             }
-            echo PHP_EOL;
+            $string .= PHP_EOL;
         }
+
+        return $string;
     }
 }

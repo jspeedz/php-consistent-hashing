@@ -3,3 +3,7 @@ parameters:
 	paths:
 		- src
 		- tests
+	ignoreErrors:
+	    -
+	        message: '#Variable \$oneHundredAndTwentyNodes in isset\(\) always exists and is always null#'
+	        path: tests/MultiProbeConsistentHashTest.php
