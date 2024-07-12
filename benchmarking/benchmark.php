@@ -31,7 +31,7 @@ ini_set('display_startup_errors', 1);
 echo 'Available hash algos: ' . implode(', ', hash_algos()) . PHP_EOL . PHP_EOL;
 
 // How many data points do we generate?
-$dataCount = 35000;
+$dataCount = 25000;
 // How many times do we re-generate the data and re-hash it?
 $dataIterations = 10;
 
@@ -48,6 +48,19 @@ $nodeDistributions = [
         'node1' => 20,
         'node2' => 30,
         'node3' => 50,
+    ],
+    '15 15 25 45' => [
+        'node1' => 15,
+        'node2' => 15,
+        'node3' => 25,
+        'node4' => 45,
+    ],
+    '50 20 20 5 5' => [
+        'node1' => 50,
+        'node2' => 20,
+        'node3' => 20,
+        'node4' => 5,
+        'node5' => 5,
     ],
     '25 25 25 25' => [
         'node1' => 100/4,
@@ -112,7 +125,7 @@ $nodeDistributions = [
         'node9' => 100/10,
         'node10' => 100/10,
     ],
-    '11 11 11 11 11 11 11 11 11 11 11' => [
+    '9.09 9.09 9.09 9.09 9.09 9.09 9.09 9.09 9.09 9.09 9.09' => [
         'node1' => 100/11,
         'node2' => 100/11,
         'node3' => 100/11,
@@ -125,18 +138,11 @@ $nodeDistributions = [
         'node10' => 100/11,
         'node11' => 100/11,
     ],
-    '15 15 25 45' => [
-        'node1' => 15,
-        'node2' => 15,
-        'node3' => 25,
-        'node4' => 45,
-    ],
-    '50 20 20 5 5' => [
-        'node1' => 50,
-        'node2' => 20,
-        'node3' => 20,
-        'node4' => 5,
-        'node5' => 5,
+    '3 1 5 1' => [
+        'node1' => 3,
+        'node2' => 1,
+        'node3' => 5,
+        'node4' => 1,
     ],
     '1 1' => [
         'node1' => 1,
@@ -280,8 +286,17 @@ foreach($nodeDistributions as $nodeDistributionName => $nodeDistribution) {
             $time = (microtime(true) - $time) * 1000;
 
             $total = array_sum($distribution);
+
+            // Convert the weights to an expected percentage of the total distribution
+            $nodeDistributionTotalWeight = array_sum($nodeDistribution);
+            $nodeDistributionPercentages = [];
+            foreach($nodeDistribution as $nodeName => $weight) {
+                $nodeDistributionPercentages[$nodeName] = $weight * 100 / $nodeDistributionTotalWeight;
+            }
+
+            // Calculate the deviation from the perfect distribution percentage
             foreach($distribution as $nodeName => &$count) {
-                $count = abs($nodeDistribution[$nodeName] - ($count / $total * 100));
+                $count = abs($nodeDistributionPercentages[$nodeName] - ($count / $total * 100));
             }
 
             $totalIterationDeviation = array_sum($distribution);
