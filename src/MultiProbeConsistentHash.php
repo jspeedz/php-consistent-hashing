@@ -2,6 +2,8 @@
 
 namespace Jspeedz\PhpConsistentHashing;
 
+use InvalidArgumentException;
+
 class MultiProbeConsistentHash {
     /**
      * @var array<string, float> $nodes
@@ -18,6 +20,20 @@ class MultiProbeConsistentHash {
      */
     public function setHashFunctions(array $hashFunctions): void {
         $this->hashFunctions = array_values($hashFunctions);
+    }
+
+    /**
+     * @param array<string, null|float> $nodes Node names as keys and weights as values.
+     *                                         If weight is null, it will be set to 1.
+     */
+    public function addNodes(array $nodes): void {
+        foreach($nodes as $node => $weight) {
+            if($weight === null) {
+                $weight = 1.0;
+            }
+
+            $this->addNode($node, $weight);
+        }
     }
 
     public function addNode(?string $node, float $weight = 1): void {
@@ -38,6 +54,7 @@ class MultiProbeConsistentHash {
         }
 
         $minHash = PHP_INT_MAX;
+//        $minHash = PHP_FLOAT_MAX;
         $targetNode = null;
 
         foreach($this->nodes as $node => $weight) {

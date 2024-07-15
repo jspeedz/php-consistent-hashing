@@ -32,6 +32,35 @@ class MultiProbeConsistentHashTest extends TestCase {
         $this->assertSame($hashFunctions, $hashFunctionsProperty->getValue($hash));
     }
 
+    public function testAddNodes(): void {
+        $hash = $this->getMockBuilder(MultiProbeConsistentHash::class)
+            ->disableOriginalConstructor()
+            ->onlyMethods([
+                'addNode',
+            ])
+            ->getMock();
+
+        $matcher = $this->exactly(3);
+        $hash->expects($matcher)
+            ->method('addNode')
+            ->willReturnCallback(function(string $node, ?float $weight) use ($matcher) {
+                match($matcher->numberOfInvocations()) {
+                    1 => $this->assertEquals('node1', $node) &&
+                        $this->assertEquals(1.5, $weight),
+                    2 => $this->assertEquals('node2', $node) &&
+                        $this->assertEquals(2.0, $weight),
+                    3 => $this->assertEquals('node3', $node) &&
+                        $this->assertEquals(1.0, $weight),
+                };
+            });
+
+        $hash->addNodes([
+            'node1' => 1.5,
+            'node2' => 2.0,
+            'node3' => null,
+        ]);
+    }
+
     public function testAddNode(): void {
         $hash = new MultiProbeConsistentHash();
         $hash->addNode('node1', 1.5);
