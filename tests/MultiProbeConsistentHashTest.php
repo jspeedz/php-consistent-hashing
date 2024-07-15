@@ -53,7 +53,7 @@ class MultiProbeConsistentHashTest extends TestCase {
                         $this->assertEquals('node2', $node);
                         $this->assertEquals(2.0, $weight);
                         break;
-                    case 2:
+                    case 3:
                         $this->assertEquals('node3', $node);
                         $this->assertEquals(1.0, $weight);
                         break;
