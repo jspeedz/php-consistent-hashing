@@ -44,13 +44,19 @@ class MultiProbeConsistentHashTest extends TestCase {
         $hash->expects($matcher)
             ->method('addNode')
             ->willReturnCallback(function(string $node, ?float $weight) use ($matcher) {
-                match($matcher->numberOfInvocations()) {
-                    1 => $this->assertEquals('node1', $node) &&
-                        $this->assertEquals(1.5, $weight),
-                    2 => $this->assertEquals('node2', $node) &&
-                        $this->assertEquals(2.0, $weight),
-                    3 => $this->assertEquals('node3', $node) &&
-                        $this->assertEquals(1.0, $weight),
+                switch($matcher->numberOfInvocations()) {
+                    case 1:
+                        $this->assertEquals('node1', $node);
+                        $this->assertEquals(1.5, $weight);
+                        break;
+                    case 2:
+                        $this->assertEquals('node2', $node);
+                        $this->assertEquals(2.0, $weight);
+                        break;
+                    case 2:
+                        $this->assertEquals('node3', $node);
+                        $this->assertEquals(1.0, $weight);
+                        break;
                 };
             });
 
