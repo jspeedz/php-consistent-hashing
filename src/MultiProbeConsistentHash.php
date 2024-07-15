@@ -2,8 +2,6 @@
 
 namespace Jspeedz\PhpConsistentHashing;
 
-use InvalidArgumentException;
-
 class MultiProbeConsistentHash {
     /**
      * @var array<string, float> $nodes
@@ -54,7 +52,6 @@ class MultiProbeConsistentHash {
         }
 
         $minHash = PHP_INT_MAX;
-//        $minHash = PHP_FLOAT_MAX;
         $targetNode = null;
 
         foreach($this->nodes as $node => $weight) {
