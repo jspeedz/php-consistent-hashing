@@ -260,6 +260,7 @@ class MultiProbeConsistentHashTest extends TestCase {
             true,
             JSON_THROW_ON_ERROR,
         );
+        $ascendingNumberKeys = array_map('strval', range(1, 15000));
 
         $randomStrings = file_get_contents(__DIR__ . '/data/random_strings.json');
         if(!$randomStrings) {
@@ -446,6 +447,104 @@ class MultiProbeConsistentHashTest extends TestCase {
             ];
         }
 
+        # -------------------
+        # -------------------
+
+        yield 'Standard - Ascending numbers keys - Equal distribution - 2 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.28,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Standard - Ascending numbers keys - Equal distribution - 3 nodes' => [
+            'maximumAllowedDeviationPercentage' => 1.33,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+                'node3' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Standard - Ascending numbers keys - Equal distribution - 4 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.34,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+                'node3' => 1,
+                'node4' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Standard - Ascending numbers keys - Unequal distribution - 2 nodes' => [
+            'maximumAllowedDeviationPercentage' => 1.46,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 25,
+                'node2' => 75,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Standard - Ascending numbers keys - Unequal distribution - 3 nodes' => [
+            'maximumAllowedDeviationPercentage' => 2.6,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 5,
+                'node2' => 25,
+                'node3' => 70,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Standard - Ascending numbers keys - Unequal distribution - 4 nodes' => [
+            'maximumAllowedDeviationPercentage' => 1.29,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 5,
+                'node2' => 25,
+                'node3' => 30,
+                'node4' => 40,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Standard - Ascending numbers keys - Equal distribution - 12 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.9,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+                'node3' => 1,
+                'node4' => 1,
+                'node5' => 1,
+                'node6' => 1,
+                'node7' => 1,
+                'node8' => 1,
+                'node9' => 1,
+                'node10' => 1,
+                'node11' => 1,
+                'node12' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        if(isset($oneHundredAndTwentyNodes)) {
+            yield 'Standard - Ascending numbers keys - Equal distribution - 150 nodes (make sure < 1 weights work)' => [
+                'maximumAllowedDeviationPercentage' => 0.28,
+                'hashFunctions' => $hashFunctions,
+                'nodes' => $oneHundredAndTwentyNodes,
+                'keys' => $ascendingNumberKeys,
+            ];
+        }
+
         // --------------
         // --------------
 
@@ -595,7 +694,7 @@ class MultiProbeConsistentHashTest extends TestCase {
             'keys' => $randomStrings,
         ];
 
-        yield 'Accurate - IP keys - Equal distribution - 12 nodes' => [
+        yield 'Accurate - Random string keys - Equal distribution - 12 nodes' => [
             'maximumAllowedDeviationPercentage' => 0.38,
             'hashFunctions' => $hashFunctions,
             'nodes' => [
@@ -621,6 +720,104 @@ class MultiProbeConsistentHashTest extends TestCase {
                 'hashFunctions' => $hashFunctions,
                 'nodes' => $oneHundredAndTwentyNodes,
                 'keys' => $randomStrings,
+            ];
+        }
+
+        # -------------------
+        # -------------------
+
+        yield 'Accurate - Ascending numbers keys - Equal distribution - 2 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.45,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Accurate - Ascending numbers keys - Equal distribution - 3 nodes' => [
+            'maximumAllowedDeviationPercentage' => 1.13,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+                'node3' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Accurate - Ascending numbers keys - Equal distribution - 4 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.65,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+                'node3' => 1,
+                'node4' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Accurate - Ascending numbers keys - Unequal distribution - 2 nodes' => [
+            'maximumAllowedDeviationPercentage' => 1.05,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 25,
+                'node2' => 75,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Accurate - Ascending numbers keys - Unequal distribution - 3 nodes' => [
+            'maximumAllowedDeviationPercentage' => 1.38,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 5,
+                'node2' => 25,
+                'node3' => 70,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Accurate - Ascending numbers keys - Unequal distribution - 4 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.8,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 5,
+                'node2' => 25,
+                'node3' => 30,
+                'node4' => 40,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        yield 'Accurate - Ascending numbers keys - Equal distribution - 12 nodes' => [
+            'maximumAllowedDeviationPercentage' => 0.67,
+            'hashFunctions' => $hashFunctions,
+            'nodes' => [
+                'node1' => 1,
+                'node2' => 1,
+                'node3' => 1,
+                'node4' => 1,
+                'node5' => 1,
+                'node6' => 1,
+                'node7' => 1,
+                'node8' => 1,
+                'node9' => 1,
+                'node10' => 1,
+                'node11' => 1,
+                'node12' => 1,
+            ],
+            'keys' => $ascendingNumberKeys,
+        ];
+
+        if(isset($oneHundredAndTwentyNodes)) {
+            yield 'Accurate - Ascending numbers keys - Equal distribution - 120 nodes (make sure < 1 weights work)' => [
+                'maximumAllowedDeviationPercentage' => 2.4,
+                'hashFunctions' => $hashFunctions,
+                'nodes' => $oneHundredAndTwentyNodes,
+                'keys' => $ascendingNumberKeys,
             ];
         }
     }
