@@ -4,33 +4,39 @@ namespace Jspeedz\PhpConsistentHashing\Tests;
 
 use Jspeedz\PhpConsistentHashing\Benchmark;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 #[CoversClass(Benchmark::class)]
 class BenchmarkTest extends TestCase {
-    public function testGetAvailableHashCallbacks(): void {
+    #[Test]
+    public function getAvailableHashCallbacks(): void {
         $benchmark = new Benchmark();
         $results = $benchmark->getAvailableHashCallbacks();
 
-        $this->assertIsArray($results);
         $this->assertNotEmpty($results);
         foreach($results as $result) {
+            // Ignore this one, as there is no guarantee that the element is actually callable.
+            // @phpstan-ignore method.alreadyNarrowedType
             $this->assertIsCallable($result);
         }
 
         $results = $benchmark->getAvailableHashCallbacks([
-            'someHashAlgorithm',
+            'md5',
         ]);
 
-        $this->assertIsArray($results);
         $this->assertCount(1, $results);
         foreach($results as $result) {
+            // Ignore this one, as there is no guarantee that the element is actually callable.
+            // @phpstan-ignore method.alreadyNarrowedType
             $this->assertIsCallable($result);
+            $this->assertSame(3895525021, $result('someValue'));
         }
     }
 
-    public function testGetCombinations(): void {
+    #[Test]
+    public function getCombinations(): void {
         $benchmark = new Benchmark();
 
         // Test case 1: Normal case
@@ -74,7 +80,8 @@ class BenchmarkTest extends TestCase {
         $this->assertEquals($expected, $benchmark->getCombinations($array, $length));
     }
 
-    public function testSortByTwoColumns(): void {
+    #[Test]
+    public function sortByTwoColumns(): void {
         $benchmark = new Benchmark();
 
         // Test case 1: Normal case with ascending sort
@@ -132,7 +139,8 @@ class BenchmarkTest extends TestCase {
         $this->assertEquals($expected, $array);
     }
 
-    public function testFormatNumber(): void {
+    #[Test]
+    public function formatNumber(): void {
         $class = new ReflectionClass(Benchmark::class);
         $method = $class->getMethod('formatNumber');
         $method->setAccessible(true);
@@ -230,7 +238,8 @@ class BenchmarkTest extends TestCase {
         );
     }
 
-    public function testPrintResults(): void {
+    #[Test]
+    public function printResults(): void {
         $mock = $this->getMockBuilder(Benchmark::class)
             ->onlyMethods(['formatNumber'])
             ->getMock();

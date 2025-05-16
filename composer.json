@@ -3,7 +3,7 @@
     "description": "Multi-probe consistent hashing implementation for PHP",
     "type": "library",
     "require-dev": {
-        "phpunit/phpunit": "^11.2",
+        "phpunit/phpunit": "^11.5",
         "phpstan/phpstan": "^1.11"
     },
     "license": "GPL-3.0-only",
@@ -14,7 +14,8 @@
     ],
     "autoload": {
         "psr-4": {
-            "Jspeedz\\PhpConsistentHashing\\": "src/"
+            "Jspeedz\\PhpConsistentHashing\\": "src/",
+            "Jspeedz\\PhpConsistentHashing\\Tests\\": "tests/"
         }
     },
     "scripts": {

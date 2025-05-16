@@ -8,6 +8,7 @@ use Jspeedz\PhpConsistentHashing\HashFunctions\Accurate;
 use Jspeedz\PhpConsistentHashing\HashFunctions\Standard;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use Jspeedz\PhpConsistentHashing\MultiProbeConsistentHash;
@@ -16,7 +17,8 @@ use Jspeedz\PhpConsistentHashing\MultiProbeConsistentHash;
 #[UsesClass(Standard::class)]
 #[UsesClass(Accurate::class)]
 class MultiProbeConsistentHashTest extends TestCase {
-    public function testSetHashFunctions(): void {
+    #[Test]
+    public function setHashFunctions(): void {
         $hash = new MultiProbeConsistentHash();
         $hashFunctions = [
             function($key) { return crc32($key); },
@@ -32,7 +34,8 @@ class MultiProbeConsistentHashTest extends TestCase {
         $this->assertSame($hashFunctions, $hashFunctionsProperty->getValue($hash));
     }
 
-    public function testAddNodes(): void {
+    #[Test]
+    public function addNodes(): void {
         $hash = $this->getMockBuilder(MultiProbeConsistentHash::class)
             ->disableOriginalConstructor()
             ->onlyMethods([
@@ -67,7 +70,8 @@ class MultiProbeConsistentHashTest extends TestCase {
         ]);
     }
 
-    public function testAddNode(): void {
+    #[Test]
+    public function addNode(): void {
         $hash = new MultiProbeConsistentHash();
         $hash->addNode('node1', 1.5);
 
@@ -87,7 +91,8 @@ class MultiProbeConsistentHashTest extends TestCase {
         $this->assertEquals(1.5, $totalWeight);
     }
 
-    public function testRemoveNode(): void {
+    #[Test]
+    public function removeNode(): void {
         $hash = new MultiProbeConsistentHash();
         $hash->addNode('node1', 1.5);
         $hash->removeNode('node1');
@@ -107,7 +112,8 @@ class MultiProbeConsistentHashTest extends TestCase {
         $this->assertEquals(0, $totalWeight);
     }
 
-    public function testGetNode(): void {
+    #[Test]
+    public function getNode(): void {
         $hash = new MultiProbeConsistentHash();
 
         $hashFunctions = [
@@ -124,7 +130,8 @@ class MultiProbeConsistentHashTest extends TestCase {
         $this->assertContains($node, ['node1', 'node2']);
     }
 
-    public function testGetNodeWithNoNodes(): void {
+    #[Test]
+    public function getNodeWithNoNodes(): void {
         $hash = new MultiProbeConsistentHash();
 
         $hashFunctions = [
@@ -145,8 +152,9 @@ class MultiProbeConsistentHashTest extends TestCase {
      * @param array<string, float> $nodes
      * @param array<string> $keys
      */
+    #[Test]
     #[DataProvider('distributionDataProvider')]
-    public function testDistribution(
+    public function distribution(
         float $maximumAllowedDeviationPercentage,
         array $hashFunctions,
         array $nodes,
@@ -155,6 +163,9 @@ class MultiProbeConsistentHashTest extends TestCase {
         $hash = new MultiProbeConsistentHash();
 
         $hash->setHashFunctions($hashFunctions);
+        /**
+         * @var array<string, array<string, float|int>> $distribution
+         */
         $distribution = [];
         foreach($nodes as $node => $weight) {
             $hash->addNode($node, $weight);
@@ -166,6 +177,10 @@ class MultiProbeConsistentHashTest extends TestCase {
 
             foreach($keys as $key) {
                 $pickedNode = $hash->getNode($key);
+                if($pickedNode === null) {
+                    $this->fail('Could not find a node');
+                }
+
                 $distribution[$pickedNode] ??= [];
                 $distribution[$pickedNode][$key] ??= 0;
                 $distribution[$pickedNode][$key] += 1;
@@ -183,10 +198,12 @@ class MultiProbeConsistentHashTest extends TestCase {
         $this->assertCount(count($nodes), $distribution, 'Did not pick all nodes');
 
         // Count the number of keys assigned to each node
-        foreach($distribution as &$keys) {
+        $distributionSums = [];
+        foreach($distribution as $k => $keys) {
             $sum = array_sum($keys);
             $keys = count($keys);
 
+            $distributionSums[$k] = $keys;
             // Make sure the actual counts match up
             $this->assertSame($runCount * $keys, $sum);
         }
@@ -198,22 +215,24 @@ class MultiProbeConsistentHashTest extends TestCase {
             $weight = $weight / $totalWeight * 100;
         }
 
-        $total = array_sum($distribution);
-        foreach($distribution as &$count) {
+        $total = array_sum($distributionSums);
+        foreach($distributionSums as &$count) {
             $count = $count / $total * 100;
         }
 
         // Compare the expected distribution with the actual distribution
         $deviations = [];
-
         foreach($nodes as $node => $expectedDistributionPercentage) {
-            // Unfortunately PHPStan doesn't get what is going on here (Or I don't)
-            // @phpstan-ignore binaryOp.invalid
-            $deviation = $expectedDistributionPercentage - $distribution[$node];
+            $deviation = $expectedDistributionPercentage - $distributionSums[$node];
             $deviation = abs($deviation);
             $deviations[$node] = $deviation;
 
         }
+
+        if(empty($deviations)) {
+            $this->fail('No deviations found');
+        }
+
         foreach($deviations as $deviation) {
             $this->assertThat(
                 $deviation,
@@ -822,7 +841,8 @@ class MultiProbeConsistentHashTest extends TestCase {
         }
     }
 
-    public function testStickynessOnNodeDeletions(): void {
+    #[Test]
+    public function stickynessOnNodeDeletions(): void {
         $hash = new MultiProbeConsistentHash();
 
         $hash->setHashFunctions([

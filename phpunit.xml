@@ -24,7 +24,7 @@
     <coverage includeUncoveredFiles="true"
               pathCoverage="false"
               ignoreDeprecatedCodeUnits="true"
-              disableCodeCoverageIgnore="true">
+              disableCodeCoverageIgnore="false">
         <report>
             <cobertura outputFile="cobertura.xml"/>
             <clover outputFile="clover.xml"/>

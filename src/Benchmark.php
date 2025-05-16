@@ -67,8 +67,14 @@ class Benchmark {
             $keys,
         );
         shuffle($keys);
+        
+        return array_map(function(mixed $key): string {
+            if(is_scalar($key) || (is_object($key) && method_exists($key, '__toString'))) {
+                return (string) $key;
+            }
 
-        return $keys;
+            throw new Exception('Key cannot be cast to string');
+        }, $keys);
     }
 
     /**

@@ -4,20 +4,16 @@ namespace Jspeedz\PhpConsistentHashing\Tests\HashFunctions;
 
 use Jspeedz\PhpConsistentHashing\HashFunctions\Accurate;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Accurate::class)]
 class AccurateTest extends TestCase {
-    public function testStandardCallbacks(): void {
+    #[Test]
+    public function standardCallbacks(): void {
         $callbacks = (new Accurate())();
 
         $this->assertCount(5, $callbacks);
-
-        $this->assertIsCallable($callbacks[0]);
-        $this->assertIsCallable($callbacks[1]);
-        $this->assertIsCallable($callbacks[2]);
-        $this->assertIsCallable($callbacks[3]);
-        $this->assertIsCallable($callbacks[4]);
 
         $this->assertSame(
             crc32('test'),
