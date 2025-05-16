@@ -17,7 +17,7 @@ foreach($argv as $item) {
 }
 
 $generatorCallbacks = [
-    'random_ip_addresses.json' => function(): false|string {
+    'random_ip_addresses.json' => function(): string {
         return long2ip(rand(0, PHP_INT_MAX));
     },
     'random_strings.json' => function(): string {
