@@ -12,13 +12,12 @@ jobs:
         strategy:
             matrix:
                 php:
-                    - "8.2"
-                    - "8.3"
+                    - "8.4"
 #                dependencies:
 #                    - "lowest"
 #                    - "highest"
                 include:
-                    -   php-version: "8.3"
+                    -   php-version: "8.4"
                         composer-options: "--ignore-platform-reqs"
         steps:
             - name: Checkout

@@ -1,9 +1,9 @@
 parameters:
-	level: 9
-	paths:
-		- src
-		- tests
-	ignoreErrors:
-	    -
-	        message: '#Variable \$oneHundredAndTwentyNodes in isset\(\) always exists and is always null#'
-	        path: tests/MultiProbeConsistentHashTest.php
+    level: 9
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        -
+            message: '#Variable \$oneHundredAndTwentyNodes in isset\(\) always exists and is always null#'
+            path: tests/MultiProbeConsistentHashTest.php
